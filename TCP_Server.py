@@ -8,9 +8,6 @@ def establish_connection(clientAddress, conn):
         print(f"mensagem recebida: {msg}")
         socketClient.sendall(str.encode("Mensagem recebida"))
 
-
-
-
 socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 socketTCP.bind(("127.0.0.1", 2026))
