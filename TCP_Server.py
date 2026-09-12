@@ -1,12 +1,19 @@
 import socket
 import threading
 
-def establish_connection(clientAddress, conn):
-    print(f"conexao estabelecida com o cliente {clientAddress}")
+active_users = {}
+
+def identify_user(message, sock_user, address_user):
+    active_users.update({"user": message, "socket": sock_user, "address": address_user})
+
+def establish_connection(client_address, conn):
+    print(f"conexao estabelecida com o cliente {client_address}")
     while True:
         msg = socketClient.recv(1024)
         print(f"mensagem recebida: {msg}")
+        identify_user(msg, client_address, conn)
         socketClient.sendall(str.encode("Mensagem recebida"))
+        print(f"Eis os usuarios online:\n {active_users}")
 
 socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
