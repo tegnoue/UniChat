@@ -1,10 +1,11 @@
 import socket
 import threading
+from env import address_server
 
 active_users = {}
 
 def identify_user(message, sock_user, address_user):
-    active_users.update({"user": message, "socket": sock_user, "address": address_user})
+    active_users.setdefault(address_user, message)
 
 def establish_connection(client_address, conn):
     print(f"conexao estabelecida com o cliente {client_address}")
@@ -17,7 +18,7 @@ def establish_connection(client_address, conn):
 
 socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-socketTCP.bind(("127.0.0.1", 2026))
+socketTCP.bind(address_server)
 socketTCP.listen()
 
 while True:

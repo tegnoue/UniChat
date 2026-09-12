@@ -1,4 +1,5 @@
 import socket
+from env import address_server
 
 # envia mensagens
 def send_messages(user):
@@ -24,7 +25,7 @@ def quit():
 
 
 socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-socketTCP.connect(("127.0.0.1", 2026))
+socketTCP.connect(address_server)
 
 while True:
     txt_command = input("O que deseja fazer?:\n")
