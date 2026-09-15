@@ -10,19 +10,26 @@ def identify_user(message, address_user):
 def chat_user(message, sender, receiver):
     msg = " ".join(message)
     chat_msg = f"mensagem de {sender}: {msg}"
-    receiver.sendall(str.encode(chat_msg))
+    rcv_address = active_users[receiver]
+    rcv_address.sendall(str.encode(chat_msg))
 
-def establish_connection(client_address, conn):
-    print(f"conexao estabelecida com o cliente {client_address}")
+def sign_up_user(conn, user):
+    active_users.setdefault(user, conn)
+
+def establish_connection(conn, client_address):
+    print(f"conexao estabelecida com o cliente {conn}")
     while True:
-        msg = client_address.recv(1024)
-        print(f"mensagem recebida: {msg}")
-        identify_user(msg, client_address)
-        client_address.sendall(str.encode("Mensagem recebida"))
-        if(msg[0:4] == "/chat"):
-            message_chat = msg.split(" ")
-            chat_user(msg[2:], client_address, msg[1])
-        #print(f"Eis os usuarios online:\n {active_users}")
+        msg_rcv = conn.recv(1024)
+        msg = msg_rcv.decode().split(" ")
+        conn.sendall(str.encode("Mensagem recebida"))
+        if(msg[0] == "/chat"):
+            message_chat = msg[2:]
+            receiver = msg[1]
+            chat_user(message_chat, conn, receiver)
+        elif(msg[0] == "USER"):
+            user = msg[1]
+            sign_up_user(conn, user)
+        # print(f"Eis os usuarios online:\n {active_users}")
 
 socketTCP = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
