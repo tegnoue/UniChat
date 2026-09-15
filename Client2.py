@@ -1,11 +1,14 @@
 import socket
 from env import address_server
 
-# envia mensagens
+#envia mensagens
 def send_messages(user):
     while True:
         txt_message = input("Escreva sua mensagem:\n")
-        bytes_message = (txt_message).encode("ascii")
+        if(txt_message == "/quit"):
+            break
+        message = f"/chat {user} {txt_message}"
+        bytes_message = message.encode("ascii")
         socketTCP.sendall(bytes_message)
         msg = socketTCP.recv(1024)
         print(f"{msg} <- recebida")
