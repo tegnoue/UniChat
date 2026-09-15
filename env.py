@@ -1,1 +1,1 @@
-address_server = ("127.0.0.1", 2022)
+address_server = ("127.0.0.1", 2052)
